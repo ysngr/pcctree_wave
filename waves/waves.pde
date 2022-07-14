@@ -1,6 +1,6 @@
 /* waves */
 
-final float MAX_DEPTH = 4;
+final float MAX_DEPTH = 3;
 
 void setup() {
   size(1150, 800);
@@ -10,7 +10,7 @@ void setup() {
 
 void draw() {
   background(240);
-  wave(height/2, 220, 0);
+  wave(height/2, 100, 0);
 }
 
 void wave(float h, float a, int depth) {
@@ -25,16 +25,16 @@ void wave(float h, float a, int depth) {
     color(201,  49,  40),
     color(242, 216,  80)
   };
-  final float d = random(6, 14);
-  final float dt = PI / random(8, 256);
+  final float d = random(2, 6);
+  final float dt = PI / random(16, 256);
   color c = cs[int(random(cs.length))];
   float w = 0;
   float t = 0;
-  float da = random(0.005, 0.200);
+  float da = random(0.005, 0.020);
 
   noStroke();
   while ( a > 0 ) {
-    fill(c, 220*(1-depth/MAX_DEPTH/2));
+    fill(c, 200*(1-depth/MAX_DEPTH/2));
     circle(w, h+a*sin(t), d);
     w += 1;
     t += dt;
@@ -43,7 +43,7 @@ void wave(float h, float a, int depth) {
       pointStart(w, h+a*sin(t), d, c);
       pushMatrix();
       translate(w, h+a*sin(t));
-      rotate(random(-PI, PI));
+      rotate(int(random(4))*HALF_PI);
       wave(0, a, depth+1);
       popMatrix();
     }
@@ -72,7 +72,7 @@ void endPoint(float x, float y, float d, color c) {
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_betelgeuse.png");
+    saveFrame("wave_benetnasch.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();

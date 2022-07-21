@@ -1,6 +1,7 @@
 /* waves */
 
 final float MAX_DEPTH = 3;
+color COLOR;
 
 void setup() {
   size(1150, 800);
@@ -10,10 +11,12 @@ void setup() {
 
 void draw() {
   background(240);
-  wave(height/2, 100, 0);
+  for ( int i = 0; i < 12; i++ ) {
+    wave(random(0.35, 0.65)*height, random(40, 80), 0);
+  }
 }
 
-void wave(float h, float a, int depth) {
+void setColor() {
   final color[] cs = {
     color( 80, 124, 144),
     color( 87, 100, 116),
@@ -25,54 +28,61 @@ void wave(float h, float a, int depth) {
     color(201,  49,  40),
     color(242, 216,  80)
   };
-  final float d = random(2, 6);
+  COLOR = cs[int(random(cs.length))];
+}
+
+void wave(float h, float a, int depth) {
+  final float d = random(2, 4);
   final float dt = PI / random(16, 256);
-  color c = cs[int(random(cs.length))];
   float w = 0;
   float t = 0;
   float da = random(0.005, 0.020);
 
+  if ( depth == 0 ) {
+    setColor();
+  }
   noStroke();
+  fill(COLOR, 200*(1-0.8*depth/MAX_DEPTH));
+  
   while ( a > 0 ) {
-    fill(c, 200*(1-depth/MAX_DEPTH/2));
     circle(w, h+a*sin(t), d);
     w += 1;
     t += dt;
     a -= da;
-    if ( depth < MAX_DEPTH && random(280) < 1 ) {
-      pointStart(w, h+a*sin(t), d, c);
+    if ( depth < MAX_DEPTH && random(240) < 1 ) {
+      pointStart(w, h+a*sin(t), d);
       pushMatrix();
       translate(w, h+a*sin(t));
-      rotate(int(random(4))*HALF_PI);
+      rotate(random(-1, 1)*PI/8);
       wave(0, a, depth+1);
       popMatrix();
     }
   }
-  endPoint(w, h+a*sin(t), d, c);
+  endPoint(w, h+a*sin(t), d);
 }
 
-void pointStart(float x, float y, float d, color c) {
-  stroke(c);
+void pointStart(float x, float y, float d) {
+  stroke(COLOR);
   noFill();
   circle(x, y, 2.4*d);
   noStroke();
-  fill(c);
+  fill(COLOR);
   circle(x, y, 2.0*d);
 }
 
-void endPoint(float x, float y, float d, color c) {
-  stroke(c);
+void endPoint(float x, float y, float d) {
+  stroke(COLOR);
   noFill();
   square(x, y, 2.2*d);
   noStroke();
-  fill(c);
+  fill(COLOR);
   square(x, y, 1.8*d);
 }
 
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_benetnasch.png");
+    saveFrame("wave_bellatrix.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();

@@ -7,16 +7,17 @@ void setup() {
 
 void draw() {
   background(240);
-  wavePlate();
+  for ( int i = 0; i < 48; i++ ) {
+    wavePlate(random(120, 280));
+  }
 }
 
-void wavePlate() {
-  final float R = 260;
+void wavePlate(float r) {
   pushMatrix();
-  translate(width/2, height/2);
-  for ( int i = 0; i < 512; i++ ) {
+  translate(random(width), random(height));
+  for ( int i = 0; i < 128; i++ ) {
     rotate(random(-PI, PI));
-    wave(random(0.5, 1.5)*R);
+    wave(random(0.5, 1.5)*r);
   }
   popMatrix();
 }
@@ -35,13 +36,13 @@ void wave(float l) {
     color(252,  96,  18)
   };
   final float da = 1 + random(0.002, 0.008);
-  final float d = 5;
+  final float d = random(1, 3);
   final float dt = PI / 64;
   final float dw = random(0.4, 1.0);
   float a = random(5, 10);
   float t = 0;
   noStroke();
-  fill(cs[int(random(cs.length))], 160);
+  fill(cs[int(random(cs.length))], random(60, 120));
   for ( float w = 0; w < l; w += dw ) {
     circle(w, a*sin(t), d);
     a *= da;
@@ -52,7 +53,7 @@ void wave(float l) {
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_deneb.png");
+    saveFrame("wave_denebola.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();

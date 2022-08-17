@@ -9,10 +9,10 @@ void draw() {
   background(240);
   reverseWorld();
   final float dh = 100;
-  final int d = 2;
+  final int d = 3;
   for ( float h = 0; h <= height; h += dh ) {
     for ( int i = -d; i < d; i++ ) {
-      wave(h+i, int(random(4, 10)));
+      wave(h+i, int(random(4, 50)));
     }
   }
 }
@@ -34,16 +34,16 @@ void wave(float h, int n) {
     color(250, 250, 245),
     color( 83,  78, 138)
   };
-  final float[] xs = initXs(-20, 20, width);
-  final float[] ps = getParams(-25, 25, n+1);
+  final float[] xs = initXs(-600, 600, width);
+  final float[] ps = getParams(-8, 8, n+1);
   float x;
   float[] ys = new float[xs.length];
   for ( int i = 0; i < ys.length; i++ ) {
     x = xs[i];
     ys[i] = synthwave(ps, x);
   }
-  strokeWeight(random(2, 8));
-  stroke(cs[int(random(cs.length))]);
+  strokeWeight(random(1.5, 2.5));
+  stroke(cs[int(random(cs.length))], random(80, 160));
   for ( int i = 0; i < ys.length-1; i++ ) {
     line(i, h+ys[i], i+1, h+ys[i+1]);
   }
@@ -77,7 +77,7 @@ float synthwave(float[] ps, float x) {
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_eris.png");
+    saveFrame("wave_elnath.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();

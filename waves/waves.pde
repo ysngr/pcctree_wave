@@ -9,7 +9,7 @@ void draw() {
   background(240);
   final float dh = 50;
   for ( float h = 0; h <= height; h += dh ) {
-    waveCircles(h, dh/2);
+    waveCircles(h, dh/5);
   }
 }
 
@@ -26,23 +26,33 @@ void waveCircles(float h, float md) {
     color(137, 164, 178)
   };
   final float g = 100;
-  final float dt = PI / random(16, 32);
+  final float dt = PI / random(128, 256);
+  int n;
   float t, d, dw;
+  n = int(random(2, 12));
   t = random(-PI, PI);
   noStroke();
   for ( float w = -g; w < width+g; w += dw ) {
     fill(cs[int(random(cs.length))]);
-    d = md * (1 + cos(t));
+    d = md * waveDiag(n, t);
     circle(w, h, d);
-    dw = random(0.1, 0.2) * d;
+    dw = random(0.02, 0.04) * d;
     t += dt;
   }
+}
+
+float waveDiag(int n, float t) {
+  float y = 0;
+  for ( int i = 0; i < n; i++ ) {
+    y += cos(i*t);
+  }
+  return y;
 }
 
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_izar.png");
+    saveFrame("wave_intercrus.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();

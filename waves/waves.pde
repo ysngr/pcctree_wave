@@ -2,14 +2,13 @@
 
 void setup() {
   size(1150, 800);
-  strokeWeight(0.4);
-  blendMode(SCREEN);
+  blendMode(ADD);
   noLoop();
 }
 
 void draw() {
   background(0);
-  for ( int i = 0; i < 32; i++ ) {
+  for ( int i = 0; i < 512; i++ ) {
     waveMicelle(random(width), random(height), random(32, 64));
   }
 }
@@ -26,29 +25,26 @@ void waveMicelle(float x, float y, float r) {
     color(204, 104, 117),
     color(164, 125,  90)
   };
-  float dt, alp, headDiam, tailHeight, ahd, ath, dht;
-  color c = cs[int(random(cs.length))];
+  float dt, headDiam, tailHeight, ahd, ath, dht;
 
   pushMatrix();
   translate(x, y);
   rotate(random(-PI, PI));
 
+  noStroke();
+  fill(cs[int(random(cs.length))], 8);
+
   dt = PI / random(512, 1024);
-  headDiam = random(0.01, 0.04) * r;
-  tailHeight = random(1.0, 1.6) * r;
-  ahd = 0.04 * headDiam;
-  ath = 0.01 * tailHeight;
-  dht = random(4, 8);
+  headDiam = random(0.04, 0.08) * r;
+  tailHeight = random(0.8, 1.6) * r;
+  ahd = 0.016 * headDiam;
+  ath = 0.020 * tailHeight;
+  dht = random(8, 16);
 
   for ( float t = 0; t < TWO_PI; t += dt ) {
-    alp = 24 * (1 + sin(7*t));
-    stroke(c, alp);
-    line(r*cos(t), r*sin(t), tailHeight*cos(t), tailHeight*sin(t));
-    noStroke();
-    fill(c, alp);
     circle(tailHeight*cos(t), tailHeight*sin(t), headDiam);
     headDiam += ahd * cos(t);
-    tailHeight += min(r, ath*tan(dht*t));
+    tailHeight += ath* tan(dht*t);
   }
 
   popMatrix();
@@ -57,7 +53,7 @@ void waveMicelle(float x, float y, float r) {
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_luna.png");
+    saveFrame("wave_larawag.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();

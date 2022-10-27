@@ -7,9 +7,14 @@ void setup() {
 
 void draw() {
   background(240);
-  for ( int i = 0; i < 40; i++ ) {
-    waveCircle(random(width), random(height), random(80, 260));
+  pushMatrix();
+  translate(width/2, height/2);
+  for ( float r = 60; r < 360; r += 60 ) {
+    for ( float t = 0; t < TWO_PI; t += PI / 5 ) {
+      waveCircle(r*cos(t), r*sin(t), map(r, 60, 360, 40, 200));
+    }
   }
+  popMatrix();
 }
 
 void waveCircle(float cx, float cy, float d) {
@@ -27,16 +32,19 @@ void waveCircle(float cx, float cy, float d) {
   float dt, inr, amp, hop, outr;
   pushMatrix();
   translate(cx, cy);
+  noFill();
   for ( int i = 0; i < 3; i++ ) {
-    stroke(cs[int(random(cs.length))], 160);
+    strokeWeight(random(1, 3));
+    stroke(cs[int(random(cs.length))], 200);
     rotate(random(-PI, PI));
-    dt = PI / random(512, 1024);
-    inr = d / random(1.8, 2.2);
-    amp = random(0.04, 0.16) * d;
-    hop = int(random(4, 16));
+    dt = PI / int(random(32, 64));
+    inr = d / 2;
+    amp = random(0.04, 0.32) * d;
+    hop = int(random(8, 16));
     for ( float t = 0; t < TWO_PI; t += dt ) {
-      outr = inr + amp * cos(hop*t);
+      outr = 1.5 * inr + amp * cos(hop*t);
       line(inr*cos(t), inr*sin(t), outr*cos(t), outr*sin(t));
+      circle(outr*cos(t), outr*sin(t), 5);
     }
   }
   popMatrix();
@@ -45,7 +53,7 @@ void waveCircle(float cx, float cy, float d) {
 
 void keyPressed() {
   if ( key == 's' ) {
-    saveFrame("wave_miaplacidus.png");
+    saveFrame("wave_mars.png");
     exit();
   } else if ( key == 'r' ) {
     redraw();
